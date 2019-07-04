@@ -1,0 +1,31 @@
+#dashboard {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  grid-gap: 1em;
+  padding: 1em;
+}
+
+#control-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#control-panel > div {
+  cursor: pointer;
+  padding: 0.6em;
+  margin: 0.3em;
+  width: 6em;
+  text-align: center;
+  font-size: 1.2em;
+  background-color: lightgray;
+  border: 0.2em solid white;
+  box-sizing: content-box;
+  transition: all 0.5s;
+}
+
+#control-panel > div.active {
+  border: 0.2em solid black;
+  box-shadow: gray 0.3em 0.3em 0.3em;
+  font-weight: bold;
+}
