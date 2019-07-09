@@ -23,15 +23,14 @@ object HTTPServer {
   import actorSystem._
   private implicit val mat = ActorMaterializer()
 
-  val routes = path("metrics") { metrics(prometheusRegistry) } ~ allRoutes
+  val routesFlow = (path("metrics") {
+    metrics(prometheusRegistry)
+  } ~ allRoutes)
+    .recordMetrics(prometheusRegistry)
 
   def start(): Future[Http.ServerBinding] = {
     val f =
-      Http().bindAndHandle(
-        routes.recordMetrics(prometheusRegistry),
-        "0.0.0.0",
-        9001
-      )
+      Http().bindAndHandle(routesFlow, "0.0.0.0", 9001)
 
     f.onComplete {
       case Success(binding) =>
