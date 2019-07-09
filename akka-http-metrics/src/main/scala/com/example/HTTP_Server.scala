@@ -12,7 +12,7 @@ import fr.davit.akka.http.metrics.prometheus.marshalling.PrometheusMarshallers._
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-object HTTPServer {
+object HTTP_Server {
 
   val prometheusRegistry = PrometheusRegistry()
 

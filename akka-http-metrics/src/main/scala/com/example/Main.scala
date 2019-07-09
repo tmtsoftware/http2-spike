@@ -1,6 +1,6 @@
 package com.example
 
 object Main extends App {
-  HTTPServer.start()
-  HTTPSServer.start()
+  HTTP_Server.start()
+  HTTP2_Server.start()
 }
