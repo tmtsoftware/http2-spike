@@ -12,7 +12,7 @@ import akka.stream.scaladsl.Source
 import scala.concurrent.duration.{DurationLong, FiniteDuration}
 import scala.concurrent.{Future, Promise}
 import scala.language.postfixOps
-import scala.util.Try
+import scala.util.{Random, Try}
 
 package object example extends Directives {
 
@@ -34,21 +34,27 @@ package object example extends Directives {
   val allRoutes: Route = cors() {
     get {
       path("stream") {
-        parameter('durationInSeconds.as[Int]) { durationInSeconds =>
-          complete(
-            Source
-              .tick(0.seconds, 1.second, 0)
-              .statefulMapConcat(() => {
-                var number: Int = 0
-                _ =>
-                  {
-                    number = number + 1
-                    List(number)
-                  }
-              })
-              .takeWithin(durationInSeconds.seconds)
-              .map(i => ServerSentEvent(i.toString))
-          )
+        parameter('durationInSeconds.as[Int] ?) { durationInSeconds =>
+          complete {
+            val s = Source
+              .tick(0.seconds, 100.millis, 0)
+              .map(_ => Random.nextInt(100))
+            //              .statefulMapConcat(() => {
+            //                var number: Int = 0
+            //                _ =>
+            //                  {
+            //                    number = number + Random.nextInt(10)
+            //                    List(number)
+            //                  }
+            //              })
+            durationInSeconds match {
+              case Some(value) =>
+                s.takeWithin(value.seconds)
+                  .map(i => ServerSentEvent(i.toString))
+              case None =>
+                s.map(i => ServerSentEvent(i.toString))
+            }
+          }
         }
       } ~ (path("entity") & parameter('delay.as[Int] ?)) { delay =>
         //DEFAULTS

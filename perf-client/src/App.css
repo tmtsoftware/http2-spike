@@ -1,31 +1,44 @@
 #dashboard {
-  display: grid;
-  grid-template-columns: auto auto auto auto auto auto;
-  grid-gap: 1em;
-  padding: 1em;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    grid-gap: 0.8em;
+    padding: 0.8em;
 }
 
 #control-panel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #control-panel > div {
-  cursor: pointer;
-  padding: 0.6em;
-  margin: 0.3em;
-  width: 6em;
-  text-align: center;
-  font-size: 1.2em;
-  background-color: lightgray;
-  border: 0.2em solid white;
-  box-sizing: content-box;
-  transition: all 0.5s;
+    cursor: pointer;
+    padding: 0.5em;
+    margin: 0.6em 0.5em 0.2em;
+    width: 6em;
+    text-align: center;
+    font-size: 1em;
+    background-color: lightgray;
+    /*border: 0.2em solid white;*/
+    box-sizing: content-box;
+    transition: all 0.5s;
 }
 
 #control-panel > div.active {
-  border: 0.2em solid black;
-  box-shadow: gray 0.3em 0.3em 0.3em;
-  font-weight: bold;
+    border: 0.2em solid black;
+    box-shadow: gray 0.3em 0.3em 0.3em;
+    font-weight: bold;
+}
+
+
+#footer {
+    font-family: monospace;
+    font-size: 1.3em;
+    background-color: black;
+    color: white;
+    padding: 0.3em;
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    bottom: 0;
 }

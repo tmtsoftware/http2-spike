@@ -6,10 +6,15 @@ import {Widget} from "./Widget";
 function App() {
     const boxes = [];
 
+    const modes = {
+        http1: "http://localhost:9001/stream?durationInSeconds=7",
+        http2: "https://localhost:9000/stream"
+    };
+
     const [mode, setMode] = useState('init');
 
     for (let i = 1; i < 49; i++) {
-        boxes.push(<Widget mode={mode} key={mode+i.toString()} index={i}/>)
+        boxes.push(<Widget mode={mode} key={mode + i.toString()} index={mode + i.toString()}/>)
     }
 
     const handleClick = (m) => {
@@ -28,8 +33,11 @@ function App() {
                 </div>
             </div>
             <div id='dashboard'>
-                { mode === 'init' ? null : boxes}
+                {mode === 'init' ? null : boxes}
             </div>
+            {mode === 'init' ? null : <div id='footer'>
+                {modes[mode]}
+            </div>}
         </div>
     );
 }
