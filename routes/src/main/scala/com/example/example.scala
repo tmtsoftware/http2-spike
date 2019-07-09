@@ -2,17 +2,17 @@ package com
 
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter.ISO_LOCAL_TIME
-import java.util.{Timer, TimerTask}
+import java.util.{ Timer, TimerTask }
 
 import akka.http.scaladsl.marshalling.sse.EventStreamMarshalling._
 import akka.http.scaladsl.model.sse.ServerSentEvent
-import akka.http.scaladsl.server.{Directives, Route}
+import akka.http.scaladsl.server.{ Directives, Route }
 import akka.stream.scaladsl.Source
 
-import scala.concurrent.duration.{DurationLong, FiniteDuration}
-import scala.concurrent.{Future, Promise}
+import scala.concurrent.duration.{ DurationLong, FiniteDuration }
+import scala.concurrent.{ Future, Promise }
 import scala.language.postfixOps
-import scala.util.{Random, Try}
+import scala.util.{ Random, Try }
 
 package object example extends Directives {
 

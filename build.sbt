@@ -31,7 +31,7 @@ lazy val akkaHTTPMetrics = (project in file("./akka-http-metrics"))
   .settings(
     name := "AkkaHttpHttp2POC",
     libraryDependencies ++= Seq(
-      "fr.davit" %% "akka-http-metrics-prometheus" % "0.3.0"
+      "fr.davit" %% "akka-http-metrics-prometheus" % "0.4.0"
     ),
   )
   .dependsOn(routes)

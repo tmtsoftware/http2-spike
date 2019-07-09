@@ -3,18 +3,18 @@ package com.example
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.sse.ServerSentEvent
-import akka.http.scaladsl.model.{HttpMethods, HttpRequest, Uri}
+import akka.http.scaladsl.model.{ HttpMethods, HttpRequest, Uri }
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.http.scaladsl.unmarshalling.sse.EventStreamUnmarshalling._
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.{Sink, Source}
-import akka.{Done, NotUsed}
+import akka.stream.scaladsl.{ Sink, Source }
+import akka.{ Done, NotUsed }
 import caseapp.core.RemainingArgs
 import caseapp.core.app.CaseApp
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationLong
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 
 object Main extends CaseApp[Options] {
 
@@ -51,27 +51,24 @@ object Main extends CaseApp[Options] {
           HttpRequest(
             HttpMethods.GET,
             Uri(
-              s"http://$ip:9000/stream?durationInSeconds=${options.durationInSeconds}"
-            )
-          )
-        )
+              s"http://$ip:9000/stream?durationInSeconds=${options.durationInSeconds}")))
 
       requestF.onComplete {
         case Failure(exception) =>
           printWithTime(s"stream $i failed to start")
           exception.printStackTrace()
         case Success(_) =>
-//          printWithTime(s"stream $i started")
+        //          printWithTime(s"stream $i started")
       }
 
       val streamF = requestF
         .flatMap(Unmarshal(_).to[Source[ServerSentEvent, NotUsed]])
         .flatMap(s => s.runWith(Sink.ignore))
-//        .flatMap(x => {
-//          x.runForeach(x => {
-//            printWithTime(s"($i) ${x.data} ($ip)")
-//          })
-//        })
+      //        .flatMap(x => {
+      //          x.runForeach(x => {
+      //            printWithTime(s"($i) ${x.data} ($ip)")
+      //          })
+      //        })
 
       streamF.onComplete {
         case Failure(exception) =>
@@ -87,8 +84,7 @@ object Main extends CaseApp[Options] {
     def entityRequest(i: Int): Future[Done] = {
       Http()
         .singleRequest(
-          HttpRequest(HttpMethods.GET, Uri(s"http://$nextIp:9000/entity"))
-        )
+          HttpRequest(HttpMethods.GET, Uri(s"http://$nextIp:9000/entity")))
         .map(s => {
           printWithTime(s"($i) ${s.status.value}")
           Done
@@ -98,8 +94,7 @@ object Main extends CaseApp[Options] {
     def printWithTime(value: String): Unit = {
       val currentTime = System.currentTimeMillis()
       println(
-        s"${(currentTime - startTime).millis.toSeconds.formatted("%02d")}s : $value"
-      )
+        s"${(currentTime - startTime).millis.toSeconds.formatted("%02d")}s : $value")
     }
 
     val spawn: Future[List[Done]] = Future
