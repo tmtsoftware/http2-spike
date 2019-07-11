@@ -1,17 +1,17 @@
 package com.example
 
 import java.io.InputStream
-import java.security.{ KeyStore, SecureRandom }
+import java.security.{KeyStore, SecureRandom}
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.{ Http, HttpsConnectionContext, UseHttp2 }
+import akka.http.scaladsl.{Http, HttpsConnectionContext, UseHttp2}
 import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
-import javax.net.ssl.{ KeyManagerFactory, SSLContext }
+import javax.net.ssl.{KeyManagerFactory, SSLContext}
 
 import scala.concurrent.Future
-import scala.util.{ Failure, Success }
+import scala.util.{Failure, Success}
 
 object HTTP2_Server {
 
@@ -52,8 +52,9 @@ object HTTP2_Server {
     val f = Http().bindAndHandleAsync(
       Route.asyncHandler(allRoutes),
       "0.0.0.0",
-      9000,
-      httpsConnectionContext)
+      9090,
+      httpsConnectionContext
+    )
 
     f.onComplete {
       case Success(binding) =>

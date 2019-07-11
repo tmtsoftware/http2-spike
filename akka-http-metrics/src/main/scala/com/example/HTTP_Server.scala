@@ -10,7 +10,7 @@ import fr.davit.akka.http.metrics.prometheus.PrometheusRegistry
 import fr.davit.akka.http.metrics.prometheus.marshalling.PrometheusMarshallers._
 
 import scala.concurrent.Future
-import scala.util.{ Failure, Success }
+import scala.util.{Failure, Success}
 
 object HTTP_Server {
 
@@ -30,7 +30,7 @@ object HTTP_Server {
 
   def start(): Future[Http.ServerBinding] = {
     val f =
-      Http().bindAndHandle(routesFlow, "0.0.0.0", 9001)
+      Http().bindAndHandle(routesFlow, "0.0.0.0", 8080)
 
     f.onComplete {
       case Success(binding) =>

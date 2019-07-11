@@ -14,26 +14,22 @@ export class Widget extends Component {
             '1': 'OPEN',
             '2': 'CLOSED'
         };
-
-        this.modes = {
-            http1: "http://localhost:9001/stream?durationInSeconds=7",
-            http2: "https://localhost:9000/stream"
-        };
+        
         this.isOpen = this.isOpen.bind(this);
     }
 
     componentDidMount() {
-        const localSse = new EventSource(this.modes[this.props.mode]);
+        const localSse = new EventSource(this.props.modes[this.props.mode]);
         localSse.onmessage = (e) => {
             this.setState({currentValue: e.data})
             // console.info(e)
         };
         localSse.onerror = () => {
-            console.log("EventSource failed.");
+            console.log("EventSource failed");
             localSse.close();
         };
         localSse.onopen = () => {
-            console.log("Connection to server opened.");
+            // console.log("Connection to server opened.");
         };
         this.setState({sse: localSse});
 

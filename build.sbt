@@ -22,10 +22,7 @@ inThisBuild(
 
 lazy val root = (project in file("."))
   .settings(name := "POC")
-  .aggregate(akkaHTTPMetrics, kamonPOC)
-
-lazy val routes = (project in file("./routes"))
-  .settings(name := "routes")
+  .aggregate(akkaHTTPMetrics)
 
 lazy val akkaHTTPMetrics = (project in file("./akka-http-metrics"))
   .settings(
@@ -34,19 +31,6 @@ lazy val akkaHTTPMetrics = (project in file("./akka-http-metrics"))
       "fr.davit" %% "akka-http-metrics-prometheus" % "0.4.0"
     ),
   )
-  .dependsOn(routes)
-
-lazy val kamonPOC = (project in file("./kamon-poc"))
-  .settings(
-    name := "kamonoPOC",
-    libraryDependencies ++= Seq(
-      "io.kamon" %% "kamon-core" % "1.1.3",
-      "io.kamon" %% "kamon-prometheus" % "1.1.1",
-      "io.kamon" %% "kamon-akka-http-2.5" % "1.1.2",
-      "io.kamon" %% "kamon-apm-reporter" % "1.1.3"
-    )
-  )
-  .dependsOn(routes)
 
 lazy val httpClient = (project in file("./http-client"))
   .settings(
