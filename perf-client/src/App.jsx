@@ -7,8 +7,8 @@ function App() {
     const boxes = [];
 
     const modes = {
-        http1: "http://another-host:8080/stream?durationInSeconds=7",
-        http2: "https://another-host:9090/stream"
+        http1: "http://another-host:8080/sse?durationInSeconds=7",
+        http2: "https://another-host:9090/sse"
     };
 
     const [mode, setMode] = useState('init');

@@ -33,7 +33,7 @@ package object example extends Directives {
 
   val allRoutes: Route = cors() {
     get {
-      path("stream") {
+      path("sse") {
         parameter('durationInSeconds.as[Int] ?) { durationInSeconds =>
           complete {
             val s = Source
