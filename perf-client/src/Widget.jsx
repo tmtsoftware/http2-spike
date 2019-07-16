@@ -14,7 +14,7 @@ export class Widget extends Component {
             '1': 'OPEN',
             '2': 'CLOSED'
         };
-        
+
         this.isOpen = this.isOpen.bind(this);
     }
 
@@ -51,7 +51,6 @@ export class Widget extends Component {
         return <div className={`cell ${this.stateMap[this.state.connectionState].toLowerCase()}`}>
             {!this.isOpen() ?
                 <h2>
-                    {/*{this.props.index} - */}
                     {this.stateMap[this.state.connectionState]}
                 </h2>
                 : <div>

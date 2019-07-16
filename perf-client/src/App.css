@@ -13,9 +13,10 @@
 
 #control-panel > div {
     cursor: pointer;
+    /*flex: 1;*/
     padding: 0.5em;
     margin: 0.6em 0.5em 0.2em;
-    width: 6em;
+    width: 10em;
     text-align: center;
     font-size: 1em;
     background-color: lightgray;
