@@ -1,8 +1,11 @@
+#layout {
+    padding-top: 0.2em;
+}
+
 #layout.active {
     display: grid;
     grid-template-rows: 2em 1fr;
     grid-row-gap: 0.4em;
-    padding-top: 0.2em;
 }
 
 
