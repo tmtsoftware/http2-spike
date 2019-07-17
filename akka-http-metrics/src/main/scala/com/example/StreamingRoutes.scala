@@ -4,21 +4,20 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter.ISO_LOCAL_TIME
 import java.util.{Timer, TimerTask}
 
+import akka.Done
 import akka.actor.Cancellable
 import akka.http.scaladsl.marshalling.sse.EventStreamMarshalling._
 import akka.http.scaladsl.model.sse.ServerSentEvent
 import akka.http.scaladsl.model.ws.TextMessage
 import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.scaladsl.{Flow, Sink, Source}
-import akka.{Done, NotUsed}
-import com.example.parameter
 
 import scala.concurrent.duration.{DurationLong, FiniteDuration}
 import scala.concurrent.{Future, Promise}
 import scala.language.postfixOps
 import scala.util.{Random, Try}
 
-package object example extends Directives {
+trait StreamingRoutes extends Directives {
 
   def tickTime: String = ISO_LOCAL_TIME.format(LocalTime.now)
 
@@ -56,7 +55,7 @@ package object example extends Directives {
       (path("websocket") & parameter('durationInSeconds.as[Int] ?)) {
         durationInSeconds =>
           handleWebSocketMessages(
-            Flow.fromSinkAndSourceCoupled(
+            Flow.fromSinkAndSource(
               printSink,
               randomNumberSource(durationInSeconds.map(x => x.seconds))
             )
@@ -75,13 +74,6 @@ package object example extends Directives {
                 s.map(i => ServerSentEvent(i.toString))
             }
           }
-        }
-      } ~ (path("entity") & parameter('delay.as[Int] ?)) { delay =>
-        //DEFAULTS
-        val defaultDelay = 5
-
-        onComplete(wait(delay.getOrElse(defaultDelay).seconds)) { _ =>
-          complete("OK")
         }
       }
     }

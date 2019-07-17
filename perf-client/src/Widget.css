@@ -1,10 +1,10 @@
 .cell {
-    height: 4em;
     display: flex;
     justify-content: center;
     flex-direction: column;
     text-align: center;
     transition: all 0.5s;
+    flex: 1;
 }
 
 .init {

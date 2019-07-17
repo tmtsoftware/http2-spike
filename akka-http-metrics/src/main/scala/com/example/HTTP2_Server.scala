@@ -7,13 +7,14 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.{Http, HttpsConnectionContext, UseHttp2}
 import akka.stream.ActorMaterializer
+import com.StreamingRoutes
 import com.typesafe.config.ConfigFactory
 import javax.net.ssl.{KeyManagerFactory, SSLContext}
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-object HTTP2_Server {
+object HTTP2_Server extends StreamingRoutes {
 
   def httpsConnectionContext: HttpsConnectionContext = {
     def resourceStream(resourceName: String): InputStream = {

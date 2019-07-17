@@ -1,0 +1,21 @@
+#control-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: 1fr;
+    grid-gap: 0.2em;
+}
+
+#control-panel > div {
+    cursor: pointer;
+    padding: 0.5em;
+    text-align: center;
+    font-size: 1em;
+    background-color: lightgray;
+}
+
+#control-panel > div.active {
+    font-weight: bold;
+    background-color: #0c38a2;
+    color: #DEDECF;
+}
+

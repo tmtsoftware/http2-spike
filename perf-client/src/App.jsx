@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {useState} from 'react';
 import './App.css';
+import './ControlPanel.css';
+import './Footer.css';
 import {Widget} from "./Widget";
 import {WsWidget} from "./WsWidget";
 
@@ -27,7 +29,7 @@ function App() {
     };
 
     return (
-        <div>
+        <div id={'layout'} className={(mode === 'init' ? '' : ' active')}>
             <div id='control-panel'>
                 <div onClick={() => handleClick('http1')} id='http1' className={mode === 'http1' ? 'active' : ''}>
                     SSE with HTTP 1
@@ -39,12 +41,17 @@ function App() {
                     WebSockets
                 </div>
             </div>
-            <div id='dashboard'>
-                {mode === 'init' ? null : boxes}
+            {mode === 'init' ? null : <div id='dashboard'>
+                {boxes}
             </div>
+            }
             {mode === 'init' ? null : <div id='footer'>
-                {modes[mode]}
-            </div>}
+                <div id='footer-text'>
+                    <div>{modes[mode]}</div>
+                </div>
+                <div id='stop-button'>Stop</div>
+            </div>
+            }
         </div>
     );
 }

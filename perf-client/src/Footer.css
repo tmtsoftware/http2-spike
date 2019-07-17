@@ -1,0 +1,29 @@
+#footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 8fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+#footer-text {
+    padding: 0.7em 0;
+    display: flex;
+    font-family: monospace;
+    font-size: 1.3em;
+    background-color: black;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+#stop-button {
+    padding: 0.7em 0;
+    display: flex;
+    font-size: 1.3em;
+    background-color: maroon;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
