@@ -2,10 +2,11 @@ import React from "react";
 import './Footer.css';
 
 export const Footer = (props) => {
-    const {modes, mode, setMode} = {...props};
+    const {modes, mode, setMode, stopWs} = {...props};
 
     const stopClicked = () => {
         window.stop();
+        stopWs();
         setMode('init');
     };
 

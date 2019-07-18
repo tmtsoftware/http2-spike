@@ -30,6 +30,7 @@ export class WsWidget extends Component {
         webSocket.onopen = () => this.setState({connectionState: webSocket.readyState});
         webSocket.onclose = () => this.setState({connectionState: webSocket.readyState});
         webSocket.onerror = () => this.setState({connectionState: webSocket.readyState});
+        this.props.addWsConnection(webSocket);
     }
 
     render() {

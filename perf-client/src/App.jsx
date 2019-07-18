@@ -8,21 +8,31 @@ import {Footer} from "./Footer";
 function App() {
 
     const modes = {
-        http1: "http://another-host:8080/sse?durationInSeconds=7",
-        http2: "https://another-host:9090/sse",
+        akka_http1_sse: "http://localhost:8080/sse?durationInSeconds=7",
+        akka_http2_sse: "https://localhost:9090/sse",
+        nginx_http2_sse: "https://localhost/sse",
         ws: "ws://localhost:8080/websocket"
     };
 
     const [mode, setMode] = useState('init');
+
+    const connections = [];
+
+    const addWsConnection = (ws) => connections.push(ws);
+
+    const stopWs = () => {
+        connections.map(x => x.close());
+        console.info(connections);
+    };
 
     return (
         <div id={'layout'} className={(mode === 'init' ? '' : ' active')}>
 
             <ControlPanel setMode={setMode} mode={mode}/>
 
-            {mode === 'init' ? null : <Dashboard modes={modes} mode={mode}/>}
+            {mode === 'init' ? null : <Dashboard addWsConnection={addWsConnection} modes={modes} mode={mode}/>}
 
-            {mode === 'init' ? null : <Footer modes={modes} mode={mode} setMode={setMode}/>}
+            {mode === 'init' ? null : <Footer modes={modes} mode={mode} setMode={setMode} stopWs={stopWs}/>}
 
         </div>
     );

@@ -7,6 +7,7 @@ import java.util.{Timer, TimerTask}
 import akka.Done
 import akka.actor.Cancellable
 import akka.http.scaladsl.marshalling.sse.EventStreamMarshalling._
+import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.model.sse.ServerSentEvent
 import akka.http.scaladsl.model.ws.TextMessage
 import akka.http.scaladsl.server.{Directives, Route}
@@ -17,9 +18,11 @@ import scala.concurrent.{Future, Promise}
 import scala.language.postfixOps
 import scala.util.{Random, Try}
 
-trait StreamingRoutes extends Directives {
+trait DemoRoutes extends Directives {
 
   def tickTime: String = ISO_LOCAL_TIME.format(LocalTime.now)
+
+  val interval = 2.seconds
 
   def wait(duration: FiniteDuration): Future[Unit] = {
     val promise = Promise[Unit]()
@@ -40,7 +43,7 @@ trait StreamingRoutes extends Directives {
     duration: Option[FiniteDuration]
   ): Source[TextMessage.Strict, Cancellable] = {
     val source = Source
-      .tick(0.second, 500.millis, 0)
+      .tick(0.second, interval, 0)
       .map(_ => Random.nextInt(100))
       .map(number => TextMessage(number.toString))
 
@@ -52,7 +55,9 @@ trait StreamingRoutes extends Directives {
 
   val allRoutes: Route = cors() {
     get {
-      (path("websocket") & parameter('durationInSeconds.as[Int] ?)) {
+      path("random") {
+        complete(Random.nextInt(100).toString)
+      } ~ (path("websocket") & parameter('durationInSeconds.as[Int] ?)) {
         durationInSeconds =>
           handleWebSocketMessages(
             Flow.fromSinkAndSource(
@@ -62,16 +67,21 @@ trait StreamingRoutes extends Directives {
           )
       } ~ path("sse") {
         parameter('durationInSeconds.as[Int] ?) { durationInSeconds =>
-          complete {
-            val s = Source
-              .tick(0.seconds, 500.millis, 0)
-              .map(_ => Random.nextInt(100))
-            durationInSeconds match {
-              case Some(value) =>
-                s.takeWithin(value.seconds)
-                  .map(i => ServerSentEvent(i.toString))
-              case None =>
-                s.map(i => ServerSentEvent(i.toString))
+          respondWithHeaders(
+            RawHeader("X-Accel-Buffering", "no"),
+            RawHeader("Cache-Control", "no-cache"),
+          ) {
+            complete {
+              val s = Source
+                .tick(0.seconds, interval, 0)
+                .map(_ => Random.nextInt(100))
+              durationInSeconds match {
+                case Some(value) =>
+                  s.takeWithin(value.seconds)
+                    .map(i => ServerSentEvent(i.toString))
+                case None =>
+                  s.map(i => ServerSentEvent(i.toString))
+              }
             }
           }
         }

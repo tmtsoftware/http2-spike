@@ -10,11 +10,17 @@ export const ControlPanel = (props) => {
     };
 
     return <div id='control-panel'>
-        <div onClick={() => handleClick('http1')} id='http1' className={mode === 'http1' ? 'active' : ''}>
+        <div onClick={() => handleClick('akka_http1_sse')} id='http1'
+             className={mode === 'akka_http1_sse' ? 'active' : ''}>
             SSE with HTTP 1
         </div>
-        <div onClick={() => handleClick('http2')} id='http2' className={mode === 'http2' ? 'active' : ''}>
+        <div onClick={() => handleClick('akka_http2_sse')} id='http2'
+             className={mode === 'akka_http2_sse' ? 'active' : ''}>
             SSE with HTTP 2
+        </div>
+        <div onClick={() => handleClick('nginx_http2_sse')} id='http2'
+             className={mode === 'nginx_http2_sse' ? 'active' : ''}>
+            SSE with HTTP 2 (via Proxy)
         </div>
         <div onClick={() => handleClick('ws')} id='ws' className={mode === 'ws' ? 'active' : ''}>
             WebSockets
