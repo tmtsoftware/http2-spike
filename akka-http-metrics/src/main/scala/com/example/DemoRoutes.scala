@@ -7,6 +7,7 @@ import java.util.{Timer, TimerTask}
 import akka.Done
 import akka.actor.Cancellable
 import akka.http.scaladsl.marshalling.sse.EventStreamMarshalling._
+import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.model.sse.ServerSentEvent
 import akka.http.scaladsl.model.ws.TextMessage
@@ -59,12 +60,20 @@ trait DemoRoutes extends Directives {
         complete(Random.nextInt(100).toString)
       } ~ (path("websocket") & parameter('durationInSeconds.as[Int] ?)) {
         durationInSeconds =>
-          handleWebSocketMessages(
-            Flow.fromSinkAndSource(
-              printSink,
-              randomNumberSource(durationInSeconds.map(x => x.seconds))
-            )
-          )
+          optionalHeaderValueByName('someHeader) { someHeader =>
+            if (durationInSeconds.getOrElse(0) >= 0)
+              handleWebSocketMessages(
+                Flow.fromSinkAndSource(
+                  printSink,
+                  randomNumberSource(durationInSeconds.map(x => x.seconds))
+                )
+              )
+            else {
+              complete(
+                StatusCodes.BadRequest -> s"durationInSeconds should be more than 0. value '${durationInSeconds}' is invalid"
+              )
+            }
+          }
       } ~ path("sse") {
         parameter('durationInSeconds.as[Int] ?) { durationInSeconds =>
           respondWithHeaders(

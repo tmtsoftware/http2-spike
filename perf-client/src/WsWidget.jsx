@@ -23,14 +23,24 @@ export class WsWidget extends Component {
 
     componentDidMount() {
         this.setState({connectionState: 0});
-        const webSocket = new WebSocket(this.props.modes[this.props.mode]);
-        webSocket.onmessage = (m) => {
-            this.setState({currentValue: parseInt(m.data)})
-        };
-        webSocket.onopen = () => this.setState({connectionState: webSocket.readyState});
-        webSocket.onclose = () => this.setState({connectionState: webSocket.readyState});
-        webSocket.onerror = () => this.setState({connectionState: webSocket.readyState});
-        this.props.addWsConnection(webSocket);
+        try {
+            const webSocket = new WebSocket(this.props.modes[this.props.mode]);
+            webSocket.onmessage = (m) => {
+                this.setState({currentValue: parseInt(m.data)})
+            };
+            webSocket.onopen = () => this.setState({connectionState: webSocket.readyState});
+            webSocket.onclose = (c) => {
+                console.warn(c);
+                this.setState({connectionState: webSocket.readyState});
+            };
+            webSocket.onerror = (e) => {
+                console.error(e);
+                this.setState({connectionState: webSocket.readyState});
+            };
+            this.props.addWsConnection(webSocket);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     render() {
